@@ -1,0 +1,11 @@
+POST http://localhost:8000/ 
+Content-Type: application/json
+
+{
+    "email": "carlos.ramirez@mail.com",
+    "password": "pass123"
+}
+###
+GET http://localhost:8000/usuarios 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjEsImVtYSI6ImNhcmxvcy5yYW1pcmV6QG1haWwuY29tIiwianRpIjoiY2I2NWQ3YWEtYWQ1YS00YzlhLWI3ZjctMmMwYTE5MDEyMTg4IiwiZXhwIjoxNzQ5NTcxNzczfQ.OF8kS5dVNYKX8KnnDm7d5Jl7UgsEBTsHFdArvgrSK08
