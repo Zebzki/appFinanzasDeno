@@ -11,6 +11,6 @@ rutas.forEach(r => {
     app.use(r.allowedMethods());
     app.use(r.routes());
 });
-
+console.log("holiiis prueba");
 console.log("servidor encendido en el puerto 8000:)");
 app.listen({ port: 8000 });
