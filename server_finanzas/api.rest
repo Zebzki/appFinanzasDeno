@@ -1,11 +1,449 @@
-POST http://localhost:8000/ 
+### ===========================================
+### CATEGORÍAS - CRUD COMPLETO (GLOBALES)
+### ===========================================
+
+### 1. Listar TODAS las categorías
+GET http://localhost:8000/categoria
+Content-Type: application/json
+
+###
+
+### 2. Obtener categoría por ID
+GET http://localhost:8000/categoria/1
+Content-Type: application/json
+
+###
+
+### 3. Obtener solo categorías de INGRESOS
+GET http://localhost:8000/categoria/tipo/ingresos
+Content-Type: application/json
+
+###
+
+### 4. Obtener solo categorías de GASTOS
+GET http://localhost:8000/categoria/tipo/gastos
+Content-Type: application/json
+
+###
+
+### 5. Crear nueva categoría de ingreso
+POST http://localhost:8000/categoria
 Content-Type: application/json
 
 {
-    "email": "carlos.ramirez@mail.com",
-    "password": "pass123"
+  "nombreCategoria": "Bonificaciones",
+  "esIngreso": true
 }
+
 ###
-GET http://localhost:8000/usuarios 
+
+### 6. Crear nueva categoría de gasto
+POST http://localhost:8000/categoria
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjEsImVtYSI6ImNhcmxvcy5yYW1pcmV6QG1haWwuY29tIiwianRpIjoiY2I2NWQ3YWEtYWQ1YS00YzlhLWI3ZjctMmMwYTE5MDEyMTg4IiwiZXhwIjoxNzQ5NTcxNzczfQ.OF8kS5dVNYKX8KnnDm7d5Jl7UgsEBTsHFdArvgrSK08
+
+{
+  "nombreCategoria": "Tecnología",
+  "esIngreso": false
+}
+
+###
+
+### 7. Actualizar categoría existente
+PUT http://localhost:8000/categoria/1
+Content-Type: application/json
+
+{
+  "nombreCategoria": "Salario Base",
+  "esIngreso": true
+}
+
+###
+
+### 8. Verificar si una categoría está siendo usada
+GET http://localhost:8000/categoria/1/uso
+Content-Type: application/json
+
+###
+
+### 9. Obtener estadísticas generales de categorías
+GET http://localhost:8000/categorias/estadisticas
+Content-Type: application/json
+
+###
+
+### 10. Eliminar categoría (eliminará presupuestos y transacciones en cascada)
+DELETE http://localhost:8000/categoria/1
+Content-Type: application/json
+
+###
+
+### ===========================================
+### CUENTAS - CRUD COMPLETO
+### ===========================================
+
+### 1. Listar todas las cuentas
+GET http://localhost:8000/cuenta
+Content-Type: application/json
+
+###
+
+### 2. Obtener una cuenta por ID
+GET http://localhost:8000/cuenta/2
+Content-Type: application/json
+
+###
+
+### 3. Crear cuenta bancaria
+POST http://localhost:8000/cuenta
+Content-Type: application/json
+
+{
+  "nombreCuenta": "Banco Nacional",
+  "idTipoCuenta": 2,
+  "saldo": 15000.50
+}
+
+###
+
+### 4. Crear cuenta de efectivo
+POST http://localhost:8000/cuenta
+Content-Type: application/json
+
+{
+  "nombreCuenta": "Efectivo",
+  "idTipoCuenta": 5,
+  "saldo": 500.00
+}
+
+###
+
+### 5. Crear tarjeta de crédito
+POST http://localhost:8000/cuenta
+Content-Type: application/json
+
+{
+  "nombreCuenta": "Visa Gold",
+  "idTipoCuenta": 3,
+  "saldo": 2500.00
+}
+
+###
+
+### 6. Actualizar una cuenta existente
+PUT http://localhost:8000/cuenta/2
+Content-Type: application/json
+
+{
+  "nombreCuenta": "Banco Nacional - Cuenta Corriente",
+  "idTipoCuenta": 2,
+  "saldo": 18000.75
+}
+
+###
+
+### 7. Actualizar solo el saldo
+PUT http://localhost:8000/cuenta/4/saldo
+Content-Type: application/json
+
+{
+  "saldo": 20000.00
+}
+
+###
+
+### 8. Obtener cuentas con información de uso
+GET http://localhost:8000/cuenta/con-uso
+Content-Type: application/json
+
+###
+
+### 9. Obtener resumen de cuentas por tipo
+GET http://localhost:8000/cuenta/resumen
+Content-Type: application/json
+
+###
+
+### 10. Eliminar una cuenta
+DELETE http://localhost:8000/cuenta/8
+Content-Type: application/json
+
+###
+
+### ===========================================
+### TIPOS DE CUENTA - CRUD COMPLETO
+### ===========================================
+
+### 1. Listar todos los tipos de cuenta
+GET http://localhost:8000/tipo-cuenta
+Content-Type: application/json
+
+###
+
+### 2. Obtener tipo de cuenta por ID
+GET http://localhost:8000/tipo-cuenta/1
+Content-Type: application/json
+
+###
+
+### 3. Crear nuevo tipo de cuenta
+POST http://localhost:8000/tipo-cuenta
+Content-Type: application/json
+
+{
+  "tipo": "Cuenta de Inversión"
+}
+
+###
+
+### 4. Crear otro tipo de cuenta
+POST http://localhost:8000/tipo-cuenta
+Content-Type: application/json
+
+{
+  "tipo": "Tarjeta Débito"
+}
+
+###
+
+### 5. Actualizar tipo de cuenta
+PUT http://localhost:8000/tipo-cuenta/1
+Content-Type: application/json
+
+{
+  "tipo": "Cuenta de Ahorros Programado"
+}
+
+###
+
+### 6. Verificar uso de un tipo de cuenta
+GET http://localhost:8000/tipo-cuenta/1/uso
+Content-Type: application/json
+
+###
+
+### 7. Eliminar tipo de cuenta
+DELETE http://localhost:8000/tipo-cuenta/7
+Content-Type: application/json
+
+###
+
+### ===========================================
+### USUARIOS - CRUD COMPLETO
+### ===========================================
+
+### 1. Listar todos los usuarios
+GET http://localhost:8000/usuario
+Content-Type: application/json
+
+###
+
+### 2. Obtener usuario por ID
+GET http://localhost:8000/usuario/1
+Content-Type: application/json
+
+###
+
+### 3. Crear nuevo usuario
+POST http://localhost:8000/usuario
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "email": "juan.perez@mail.com",
+  "telefono": "3006789012",
+  "password": "pass123"
+}
+
+###
+
+### 4. Actualizar usuario
+PUT http://localhost:8000/usuario/1
+Content-Type: application/json
+
+{
+  "nombre": "Juan Carlos",
+  "apellido": "Pérez González",
+  "email": "juancarlos.perez@mail.com",
+  "telefono": "3006789012"
+}
+
+###
+
+### 5. Cambiar contraseña
+PUT http://localhost:8000/usuario/1/password
+Content-Type: application/json
+
+{
+  "password": "newpass456"
+}
+
+###
+
+### 6. Eliminar usuario
+DELETE http://localhost:8000/usuario/1
+Content-Type: application/json
+
+###
+
+### ===========================================
+### PRESUPUESTOS - CRUD COMPLETO
+### ===========================================
+
+### 1. Listar todos los presupuestos
+GET http://localhost:8000/presupuesto
+Content-Type: application/json
+
+###
+
+### 2. Listar presupuestos por usuario
+GET http://localhost:8000/presupuesto/usuario/1
+Content-Type: application/json
+
+###
+
+### 3. Obtener presupuesto por ID
+GET http://localhost:8000/presupuesto/1
+Content-Type: application/json
+
+###
+
+### 4. Crear nuevo presupuesto
+POST http://localhost:8000/presupuesto
+Content-Type: application/json
+
+{
+  "montoLimite": 600000,
+  "inicio": "2025-07-01 00:00:00",
+  "fin": "2025-07-31 23:59:59",
+  "idUsuario": 1,
+  "idCategoria": 16
+}
+
+###
+
+### 5. Actualizar presupuesto
+PUT http://localhost:8000/presupuesto/1
+Content-Type: application/json
+
+{
+  "montoLimite": 700000,
+  "inicio": "2025-07-01 00:00:00",
+  "fin": "2025-07-31 23:59:59",
+  "idCategoria": 16
+}
+
+###
+
+### 6. Obtener presupuestos por categoría
+GET http://localhost:8000/presupuesto/categoria/16
+Content-Type: application/json
+
+###
+
+### 7. Obtener presupuestos activos
+GET http://localhost:8000/presupuesto/activos
+Content-Type: application/json
+
+###
+
+### 8. Eliminar presupuesto
+DELETE http://localhost:8000/presupuesto/1
+Content-Type: application/json
+
+###
+
+### ===========================================
+### TRANSACCIONES - CRUD COMPLETO
+### ===========================================
+
+### 1. Listar todas las transacciones
+GET http://localhost:8000/transaccion
+Content-Type: application/json
+
+###
+
+### 2. Listar transacciones por usuario
+GET http://localhost:8000/transaccion/usuario/1
+Content-Type: application/json
+
+###
+
+### 3. Obtener transacción por ID
+GET http://localhost:8000/transaccion/1
+Content-Type: application/json
+
+###
+
+### 4. Crear nueva transacción de gasto
+POST http://localhost:8000/transaccion
+Content-Type: application/json
+
+{
+  "monto": 85000,
+  "fecha": "2025-06-11 14:30:00",
+  "descripcion": "Compra supermercado familiar",
+  "idUsuario": 1,
+  "idCategoria": 16,
+  "idCuenta": 2
+}
+
+###
+
+### 5. Crear nueva transacción de ingreso
+POST http://localhost:8000/transaccion
+Content-Type: application/json
+
+{
+  "monto": 1500000,
+  "fecha": "2025-06-11 09:00:00",
+  "descripcion": "Pago salario mensual",
+  "idUsuario": 1,
+  "idCategoria": 12,
+  "idCuenta": 2
+}
+
+###
+
+### 6. Actualizar transacción
+PUT http://localhost:8000/transaccion/1
+Content-Type: application/json
+
+{
+  "monto": 95000,
+  "descripcion": "Compra supermercado familiar - actualizado",
+  "idCategoria": 16,
+  "idCuenta": 2
+}
+
+###
+
+### 7. Obtener transacciones por categoría
+GET http://localhost:8000/transaccion/categoria/16
+Content-Type: application/json
+
+###
+
+### 8. Obtener transacciones por cuenta
+GET http://localhost:8000/transaccion/cuenta/2
+Content-Type: application/json
+
+###
+
+### 9. Obtener transacciones por rango de fechas
+GET http://localhost:8000/transaccion/fecha?inicio=2025-06-01&fin=2025-06-30
+Content-Type: application/json
+
+###
+
+### 10. Obtener resumen de transacciones por usuario
+GET http://localhost:8000/transaccion/resumen/usuario/1
+Content-Type: application/json
+
+###
+
+### 11. Eliminar transacción
+DELETE http://localhost:8000/transaccion/1
+Content-Type: application/json
+
+###
