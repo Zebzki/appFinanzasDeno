@@ -1,11 +1,37 @@
+# LOGIN
 POST http://localhost:8000/ 
 Content-Type: application/json
 
 {
-    "email": "carlos.ramirez@mail.com",
-    "password": "pass123"
+    "email": "ana.lopez@mail.com",
+    "password": "pass456"
 }
 ###
 GET http://localhost:8000/usuarios 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjEsImVtYSI6ImNhcmxvcy5yYW1pcmV6QG1haWwuY29tIiwianRpIjoiY2I2NWQ3YWEtYWQ1YS00YzlhLWI3ZjctMmMwYTE5MDEyMTg4IiwiZXhwIjoxNzQ5NTcxNzczfQ.OF8kS5dVNYKX8KnnDm7d5Jl7UgsEBTsHFdArvgrSK08
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6IjkxMGY5MTFlLTY2NTctNDBmOC04ZmE0LTIzNDg4ZTMzODI2ZiIsImV4cCI6MTc0OTY3OTAxMn0.tkcitHEHODyf5JInxdOey0nfEeS6tYUvK0F_f7lrY6g
+###
+# TRANSACCIONES
+GET http://localhost:8000/transacciones
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6IjkxMGY5MTFlLTY2NTctNDBmOC04ZmE0LTIzNDg4ZTMzODI2ZiIsImV4cCI6MTc0OTY3OTAxMn0.tkcitHEHODyf5JInxdOey0nfEeS6tYUvK0F_f7lrY6g
+###
+POST http://localhost:8000/transacciones/ingreso
+Content-Type: application/json
+
+{
+   "monto": 600000,
+   "descripcion": "pago de freelance",
+   "idCategoria": 1,
+   "idCuenta": 10
+}
+###
+POST http://localhost:8000/transacciones/gasto
+Content-Type: application/json
+
+ {
+   "monto": 50000,
+   "descripcion": "almuerzo con amigos",
+   "idCategoria": 2,
+   "idCuenta": 10
+ }
