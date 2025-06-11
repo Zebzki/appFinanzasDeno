@@ -1,32 +1,30 @@
 import { Context } from "https://deno.land/x/oak@v17.1.3/mod.ts";
 import { z } from "https://deno.land/x/zod@v3.21.1/mod.ts";
-import { CategoriasModel } from "../models/categoria.ts";
+import { TipoCuentaModel } from "../models/tipoCuenta.ts";
 
-const categoriaSchema = z.object({
-  nombreCategoria: z.string().min(1, "El nombre es requerido").max(30, "El nombre es muy largo"),
-  esIngreso: z.boolean()
+const tipoCuentaSchema = z.object({
+  tipo: z.string().min(1, "El tipo es requerido").max(30, "El tipo es muy largo")
 });
 
 type ContextWithParams = Context & {
   params: {
     id?: string;
-    tipo?: string;
   };
 };
 
-export class CategoriaController {
-  private categoriasModel = new CategoriasModel();
+export class TipoCuentaController {
+  private tipoCuentaModel = new TipoCuentaModel();
 
-  // Listar TODAS las categorías
-  async obtenerTodas(ctx: Context) {
+  // Listar todos los tipos de cuenta
+  async obtenerTodos(ctx: Context) {
     try {
-      const categorias = await this.categoriasModel.obtenerTodas();
+      const tiposCuenta = await this.tipoCuentaModel.obtenerTodos();
       
       ctx.response.status = 200;
       ctx.response.body = {
         success: true,
-        data: categorias,
-        message: `${categorias.length} categorías obtenidas exitosamente`
+        data: tiposCuenta,
+        message: `${tiposCuenta.length} tipos de cuenta obtenidos exitosamente`
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
@@ -39,41 +37,7 @@ export class CategoriaController {
     }
   }
 
-  // Obtener categorías por tipo (ingresos o gastos)
-  async obtenerPorTipo(ctx: ContextWithParams) {
-    try {
-      const tipo = ctx.params?.tipo;
-      
-      if (!tipo || (tipo !== 'ingresos' && tipo !== 'gastos')) {
-        ctx.response.status = 400;
-        ctx.response.body = {
-          success: false,
-          error: "Tipo inválido. Use 'ingresos' o 'gastos'"
-        };
-        return;
-      }
-
-      const esIngreso = tipo === 'ingresos';
-      const categorias = await this.categoriasModel.obtenerPorTipo(esIngreso);
-      
-      ctx.response.status = 200;
-      ctx.response.body = {
-        success: true,
-        data: categorias,
-        message: `${categorias.length} categorías de ${tipo} obtenidas exitosamente`
-      };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-      ctx.response.status = 500;
-      ctx.response.body = {
-        success: false,
-        error: "Error interno del servidor",
-        details: errorMessage
-      };
-    }
-  }
-
-  // Obtener categoría por ID
+  // Obtener tipo de cuenta por ID
   async obtenerPorId(ctx: ContextWithParams) {
     try {
       const id = parseInt(ctx.params?.id as string);
@@ -87,13 +51,13 @@ export class CategoriaController {
         return;
       }
 
-      const categoria = await this.categoriasModel.obtenerPorId(id);
+      const tipoCuenta = await this.tipoCuentaModel.obtenerPorId(id);
       
-      if (!categoria) {
+      if (!tipoCuenta) {
         ctx.response.status = 404;
         ctx.response.body = {
           success: false,
-          error: "Categoría no encontrada"
+          error: "Tipo de cuenta no encontrado"
         };
         return;
       }
@@ -101,8 +65,8 @@ export class CategoriaController {
       ctx.response.status = 200;
       ctx.response.body = {
         success: true,
-        data: categoria,
-        message: "Categoría obtenida exitosamente"
+        data: tipoCuenta,
+        message: "Tipo de cuenta obtenido exitosamente"
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
@@ -115,12 +79,12 @@ export class CategoriaController {
     }
   }
 
-  // Crear nueva categoría
+  // Crear nuevo tipo de cuenta
   async crear(ctx: Context) {
     try {
       const body = await ctx.request.body.json();
       
-      const validacion = categoriaSchema.safeParse(body);
+      const validacion = tipoCuentaSchema.safeParse(body);
       if (!validacion.success) {
         ctx.response.status = 400;
         ctx.response.body = {
@@ -131,23 +95,23 @@ export class CategoriaController {
         return;
       }
 
-      const nuevaCategoria = validacion.data;
-      const id = await this.categoriasModel.crear(nuevaCategoria);
+      const nuevoTipoCuenta = validacion.data;
+      const id = await this.tipoCuentaModel.crear(nuevoTipoCuenta);
 
       ctx.response.status = 201;
       ctx.response.body = {
         success: true,
-        data: { idCategoria: id, ...nuevaCategoria },
-        message: "Categoría creada exitosamente"
+        data: { idTipoCuenta: id, ...nuevoTipoCuenta },
+        message: "Tipo de cuenta creado exitosamente"
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
       
-      if (errorMessage.includes("Ya existe una categoría")) {
+      if (errorMessage.includes("Ya existe un tipo de cuenta")) {
         ctx.response.status = 409; // Conflict
         ctx.response.body = {
           success: false,
-          error: "Categoría duplicada",
+          error: "Tipo de cuenta duplicado",
           message: errorMessage
         };
         return;
@@ -162,7 +126,7 @@ export class CategoriaController {
     }
   }
 
-  // Actualizar categoría
+  // Actualizar tipo de cuenta
   async actualizar(ctx: ContextWithParams) {
     try {
       const id = parseInt(ctx.params?.id as string);
@@ -178,7 +142,7 @@ export class CategoriaController {
 
       const body = await ctx.request.body.json();
       
-      const updateSchema = categoriaSchema.partial();
+      const updateSchema = tipoCuentaSchema.partial();
       const validacion = updateSchema.safeParse(body);
       if (!validacion.success) {
         ctx.response.status = 400;
@@ -190,13 +154,13 @@ export class CategoriaController {
         return;
       }
 
-      const actualizado = await this.categoriasModel.actualizar(id, validacion.data);
+      const actualizado = await this.tipoCuentaModel.actualizar(id, validacion.data);
       
       if (!actualizado) {
         ctx.response.status = 404;
         ctx.response.body = {
           success: false,
-          error: "Categoría no encontrada o sin cambios"
+          error: "Tipo de cuenta no encontrado o sin cambios"
         };
         return;
       }
@@ -204,16 +168,16 @@ export class CategoriaController {
       ctx.response.status = 200;
       ctx.response.body = {
         success: true,
-        message: "Categoría actualizada exitosamente"
+        message: "Tipo de cuenta actualizado exitosamente"
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
       
-      if (errorMessage.includes("Ya existe una categoría")) {
+      if (errorMessage.includes("Ya existe un tipo de cuenta")) {
         ctx.response.status = 409; // Conflict
         ctx.response.body = {
           success: false,
-          error: "Categoría duplicada",
+          error: "Tipo de cuenta duplicado",
           message: errorMessage
         };
         return;
@@ -228,7 +192,7 @@ export class CategoriaController {
     }
   }
 
-  // Eliminar categoría
+  // Eliminar tipo de cuenta
   async eliminar(ctx: ContextWithParams) {
     try {
       const id = parseInt(ctx.params?.id as string);
@@ -242,13 +206,13 @@ export class CategoriaController {
         return;
       }
 
-      const eliminado = await this.categoriasModel.eliminar(id);
+      const eliminado = await this.tipoCuentaModel.eliminar(id);
       
       if (!eliminado) {
         ctx.response.status = 404;
         ctx.response.body = {
           success: false,
-          error: "Categoría no encontrada"
+          error: "Tipo de cuenta no encontrado"
         };
         return;
       }
@@ -256,10 +220,21 @@ export class CategoriaController {
       ctx.response.status = 200;
       ctx.response.body = {
         success: true,
-        message: "Categoría eliminada exitosamente"
+        message: "Tipo de cuenta eliminado exitosamente"
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      
+      if (errorMessage.includes("No se puede eliminar")) {
+        ctx.response.status = 409; // Conflict
+        ctx.response.body = {
+          success: false,
+          error: "No se puede eliminar",
+          message: errorMessage
+        };
+        return;
+      }
+
       ctx.response.status = 500;
       ctx.response.body = {
         success: false,
@@ -269,7 +244,7 @@ export class CategoriaController {
     }
   }
 
-  // Verificar uso de una categoría
+  // Verificar uso del tipo de cuenta
   async verificarUso(ctx: ContextWithParams) {
     try {
       const id = parseInt(ctx.params?.id as string);
@@ -283,35 +258,13 @@ export class CategoriaController {
         return;
       }
 
-      const uso = await this.categoriasModel.verificarUso(id);
+      const uso = await this.tipoCuentaModel.verificarUso(id);
       
       ctx.response.status = 200;
       ctx.response.body = {
         success: true,
         data: uso,
         message: "Información de uso obtenida exitosamente"
-      };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-      ctx.response.status = 500;
-      ctx.response.body = {
-        success: false,
-        error: "Error interno del servidor",
-        details: errorMessage
-      };
-    }
-  }
-
-  // Obtener estadísticas
-  async obtenerEstadisticas(ctx: Context) {
-    try {
-      const estadisticas = await this.categoriasModel.obtenerEstadisticas();
-      
-      ctx.response.status = 200;
-      ctx.response.body = {
-        success: true,
-        data: estadisticas,
-        message: "Estadísticas obtenidas exitosamente"
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
