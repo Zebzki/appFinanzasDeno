@@ -2,8 +2,8 @@ import { Application, oakCors } from "./dependencies/dependencias.ts";
 import { loginRouter } from "./routes/loginRoute.ts";
 import { usuarioRouter } from "./routes/usuarioRoute.ts";
 
-import { transaccionRouter} from "./routes/transaccionRoute.ts";
-
+import { transaccionRouter } from "./routes/transaccionRoute.ts";
+import { routerPresupuesto } from "./routes/presupuestoRoute.ts";
 import categoriaRouter from "./routes/categoriaRoute.ts";
 import cuentaRouter from "./routes/cuentaRoute.ts";
 import tipoCuentaRouter from "./routes/tipoCuentaRoute.ts";
@@ -21,7 +21,8 @@ const rutas = [
   categoriaRouter, 
   cuentaRouter,
   tipoCuentaRouter,
-  transaccionRouter
+  transaccionRouter,
+  routerPresupuesto
 ];
 
 
