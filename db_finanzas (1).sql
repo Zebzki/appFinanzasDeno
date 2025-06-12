@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-06-2025 a las 16:14:25
+-- Tiempo de generación: 12-06-2025 a las 13:55:20
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -38,23 +38,11 @@ CREATE TABLE `categoria` (
 --
 
 INSERT INTO `categoria` (`idCategoria`, `nombreCategoria`, `esIngreso`) VALUES
-(2, 'Salario Base', 1),
+(1, 'Salario', 1),
+(2, 'Alimentación', 0),
 (3, 'Transporte', 0),
-(4, 'Freelance', 1),
-(5, 'Entretenimiento', 0),
-(12, 'Salario', 1),
-(13, 'Freelance', 1),
-(14, 'Inversiones', 1),
-(15, 'Otros Ingresos', 1),
-(16, 'Alimentación', 0),
-(17, 'Transporte', 0),
-(18, 'Entretenimiento', 0),
-(19, 'Servicios', 0),
-(20, 'Salud', 0),
-(21, 'Educación', 0),
-(22, 'Ropa', 0),
-(23, 'Otros Gastos', 0),
-(24, 'Bonificaciones', 1);
+(4, 'Ingreso Externo', 1),
+(5, 'Entretenimiento', 0);
 
 -- --------------------------------------------------------
 
@@ -65,22 +53,17 @@ INSERT INTO `categoria` (`idCategoria`, `nombreCategoria`, `esIngreso`) VALUES
 CREATE TABLE `cuenta` (
   `idCuenta` int(11) NOT NULL,
   `nombreCuenta` varchar(35) NOT NULL,
-  `idTipoCuenta` int(11) NOT NULL,
-  `saldo` decimal(10,2) NOT NULL
+  `saldo` decimal(10,0) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
+  `idTipoCuenta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `cuenta`
 --
 
-INSERT INTO `cuenta` (`idCuenta`, `nombreCuenta`, `idTipoCuenta`, `saldo`) VALUES
-(2, 'Cuenta Corriente Davivienda', 2, 3500000.00),
-(3, 'Cuenta Ahorros Nequi', 1, 500000.00),
-(4, 'Cuenta Corriente BBVA', 2, 1000000.00),
-(5, 'Cuenta Digital Bancolombia', 1, 750000.00),
-(6, 'Banco Nacional', 2, 15001.00),
-(7, 'Efectivo', 1, 500.00),
-(8, 'Visa Gold', 3, 2500.00);
+INSERT INTO `cuenta` (`idCuenta`, `nombreCuenta`, `saldo`, `idUsuario`, `idTipoCuenta`) VALUES
+(10, ' Bancolombia', 2670000, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -102,6 +85,7 @@ CREATE TABLE `presupuesto` (
 --
 
 INSERT INTO `presupuesto` (`idPresupuesto`, `montoLimite`, `inicio`, `fin`, `idUsuario`, `idCategoria`) VALUES
+(1, 1000000, '2025-06-01 00:00:00', '2025-06-30 23:59:59', 1, 1),
 (2, 500000, '2025-06-01 00:00:00', '2025-06-30 23:59:59', 2, 2),
 (3, 300000, '2025-06-01 00:00:00', '2025-06-30 23:59:59', 3, 3),
 (4, 800000, '2025-06-01 00:00:00', '2025-06-30 23:59:59', 4, 4),
@@ -115,7 +99,7 @@ INSERT INTO `presupuesto` (`idPresupuesto`, `montoLimite`, `inicio`, `fin`, `idU
 
 CREATE TABLE `tipocuenta` (
   `idTipoCuenta` int(11) NOT NULL,
-  `tipo` varchar(30) NOT NULL
+  `tipo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
@@ -123,14 +107,10 @@ CREATE TABLE `tipocuenta` (
 --
 
 INSERT INTO `tipocuenta` (`idTipoCuenta`, `tipo`) VALUES
-(1, 'Cuenta de Ahorros Programado'),
+(1, 'Ahorros'),
 (2, 'Corriente'),
-(3, 'Tarjeta de Crédito'),
-(4, 'Nómina'),
-(5, 'Efectivo'),
-(6, 'Inversión'),
-(8, 'Cuenta de Inversión'),
-(9, 'Tarjeta Débito');
+(3, 'Joven'),
+(4, 'Nomina');
 
 -- --------------------------------------------------------
 
@@ -143,7 +123,6 @@ CREATE TABLE `transaccion` (
   `monto` decimal(10,0) NOT NULL,
   `fecha` datetime NOT NULL,
   `descripcion` text NOT NULL,
-  `idUsuario` int(11) NOT NULL,
   `idCategoria` int(11) NOT NULL,
   `idCuenta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
@@ -152,11 +131,9 @@ CREATE TABLE `transaccion` (
 -- Volcado de datos para la tabla `transaccion`
 --
 
-INSERT INTO `transaccion` (`idTransaccion`, `monto`, `fecha`, `descripcion`, `idUsuario`, `idCategoria`, `idCuenta`) VALUES
-(2, 120000, '2025-06-06 13:00:00', 'Compra en supermercado', 2, 2, 2),
-(3, 40000, '2025-06-07 08:00:00', 'Transporte diario', 3, 3, 3),
-(4, 500000, '2025-06-08 18:00:00', 'Proyecto freelance web', 4, 4, 4),
-(5, 80000, '2025-06-09 20:30:00', 'Cine y comida rápida', 5, 5, 5);
+INSERT INTO `transaccion` (`idTransaccion`, `monto`, `fecha`, `descripcion`, `idCategoria`, `idCuenta`) VALUES
+(11, 600000, '2025-06-11 16:30:26', 'pago de freelance', 1, 10),
+(12, 50000, '2025-06-11 16:30:43', 'almuerzo con amigos', 2, 10);
 
 -- --------------------------------------------------------
 
@@ -199,7 +176,8 @@ ALTER TABLE `categoria`
 --
 ALTER TABLE `cuenta`
   ADD PRIMARY KEY (`idCuenta`),
-  ADD KEY `fk_cuenta_tipocuenta` (`idTipoCuenta`);
+  ADD KEY `fk_tipocuenta` (`idTipoCuenta`) USING BTREE,
+  ADD KEY `fk_idusuario` (`idUsuario`);
 
 --
 -- Indices de la tabla `presupuesto`
@@ -220,7 +198,6 @@ ALTER TABLE `tipocuenta`
 --
 ALTER TABLE `transaccion`
   ADD PRIMARY KEY (`idTransaccion`),
-  ADD KEY `idx_usuario` (`idUsuario`),
   ADD KEY `idx_categoria` (`idCategoria`),
   ADD KEY `idx_cuenta` (`idCuenta`);
 
@@ -238,13 +215,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `cuenta`
 --
 ALTER TABLE `cuenta`
-  MODIFY `idCuenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idCuenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `presupuesto`
@@ -256,13 +233,13 @@ ALTER TABLE `presupuesto`
 -- AUTO_INCREMENT de la tabla `tipocuenta`
 --
 ALTER TABLE `tipocuenta`
-  MODIFY `idTipoCuenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idTipoCuenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `transaccion`
 --
 ALTER TABLE `transaccion`
-  MODIFY `idTransaccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idTransaccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -278,7 +255,8 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `cuenta`
 --
 ALTER TABLE `cuenta`
-  ADD CONSTRAINT `fk_cuenta_tipocuenta` FOREIGN KEY (`idTipoCuenta`) REFERENCES `tipocuenta` (`idTipoCuenta`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `cuenta_ibfk_1` FOREIGN KEY (`idTipoCuenta`) REFERENCES `tipocuenta` (`idTipoCuenta`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cuenta_ibfk_2` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `presupuesto`
@@ -292,8 +270,7 @@ ALTER TABLE `presupuesto`
 --
 ALTER TABLE `transaccion`
   ADD CONSTRAINT `fk_transaccion_categoria` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_transaccion_cuenta` FOREIGN KEY (`idCuenta`) REFERENCES `cuenta` (`idCuenta`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_transaccion_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_transaccion_cuenta` FOREIGN KEY (`idCuenta`) REFERENCES `cuenta` (`idCuenta`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

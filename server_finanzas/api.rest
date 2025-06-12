@@ -7,6 +7,55 @@ Content-Type: application/json
     "email": "ana.lopez@mail.com",
     "password": "pass456"
 }
+###
+GET http://localhost:8000/usuarios 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6IjkxMGY5MTFlLTY2NTctNDBmOC04ZmE0LTIzNDg4ZTMzODI2ZiIsImV4cCI6MTc0OTY3OTAxMn0.tkcitHEHODyf5JInxdOey0nfEeS6tYUvK0F_f7lrY6g
+###
+### 3. Crear nuevo usuario
+POST http://localhost:8000/usuarios
+Content-Type: application/json
+
+{
+  "nombre": "Sebastian",
+  "apellido": "Preciado",
+  "email": "sebsss@mail.com",
+  "telefono": "3234195109",
+  "password": "123456"
+}
+###
+
+### 6. Eliminar usuario
+DELETE http://localhost:8000/usuarios
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjYsImVtYSI6InNlYnNzc0BtYWlsLmNvbSIsImp0aSI6IjMyMjRiMzAyLTI4NzktNDg3OS1iZWYwLTRjMDIzMDEzYjhhMyIsImV4cCI6MTc0OTczMjY2MH0.E4scQlBP1w2FlAtrzSnPSEsVbkTHzrlbmitnJsU3O5I
+###
+# TRANSACCIONES
+GET http://localhost:8000/transacciones
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6IjhmNzk1MmM5LTdmOGUtNDNlNS05YTQ5LTQyMjMzOTUzZTVhOCIsImV4cCI6MTc0OTczNDg3Nn0.JycfQa5k-7siy40RIemp7u7OxdNAXOj3xkRy5Kyw-e4
+###
+POST http://localhost:8000/transacciones/ingreso
+Content-Type: application/json
+
+{
+   "monto": 600000,
+   "descripcion": "pago de freelance",
+   "idCategoria": 1,
+   "idCuenta": 10
+}
+###
+POST http://localhost:8000/transacciones/gasto
+Content-Type: application/json
+
+ {
+   "monto": 50000,
+   "descripcion": "almuerzo con amigos",
+   "idCategoria": 2,
+   "idCuenta": 10
+ }
+
+
 
 ### CATEGORÍAS - CRUD COMPLETO (GLOBALES)
 
@@ -338,116 +387,30 @@ DELETE http://localhost:8000/tipo-cuenta/7
 Content-Type: application/json
 
 ###
-
-
-
-### 3. Crear nuevo usuario
-POST http://localhost:8000/usuario
-Content-Type: application/json
-
-{
-  "nombre": "Juan",
-  "apellido": "Pérez",
-  "email": "juan.perez@mail.com",
-  "telefono": "3006789012",
-  "password": "pass123"
-}
-
-###
-
-### 4. Actualizar usuario
-PUT http://localhost:8000/usuario/1
-Content-Type: application/json
-
-{
-  "nombre": "Juan Carlos",
-  "apellido": "Pérez González",
-  "email": "juancarlos.perez@mail.com",
-  "telefono": "3006789012"
-}
-
-###
-
-### 5. Cambiar contraseña
-PUT http://localhost:8000/usuario/1/password
-Content-Type: application/json
-
-{
-  "password": "newpass456"
-}
-
-###
-
-### 6. Eliminar usuario
-DELETE http://localhost:8000/usuario/1
-Content-Type: application/json
-
-###
-
-### 
 ### PRESUPUESTOS - CRUD COMPLETO
-### 
 
-### 1. Listar todos los presupuestos
-GET http://localhost:8000/presupuesto
-Content-Type: application/json
 
-###
 
-### 2. Listar presupuestos por usuario
-GET http://localhost:8000/presupuesto/usuario/1
-Content-Type: application/json
-
-###
-
-### 3. Obtener presupuesto por ID
-GET http://localhost:8000/presupuesto/1
-Content-Type: application/json
-
-###
 
 ### 4. Crear nuevo presupuesto
 POST http://localhost:8000/presupuesto
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6ImZlMWUwM2E5LWNhYzgtNGVkYS1iOGQyLTIxZjhjNDUyNzE1NSIsImV4cCI6MTc0OTc1OTE4Mn0.vXDlK36U58wwzGt2ji8KBqqP5piM9oT5s9PxrxpauJo
 
 {
   "montoLimite": 600000,
-  "inicio": "2025-07-01 00:00:00",
-  "fin": "2025-07-31 23:59:59",
-  "idUsuario": 1,
-  "idCategoria": 16
+  "fechaInicio": "2025-07-01 00:00:00",
+  "fechaFin": "2025-07-31 23:59:59",
+  "idCategoria": 5
 }
 
-###
 
-### 5. Actualizar presupuesto
-PUT http://localhost:8000/presupuesto/1
-Content-Type: application/json
 
-{
-  "montoLimite": 700000,
-  "inicio": "2025-07-01 00:00:00",
-  "fin": "2025-07-31 23:59:59",
-  "idCategoria": 16
-}
 
-###
 
-### 6. Obtener presupuestos por categoría
-GET http://localhost:8000/presupuesto/categoria/16
-Content-Type: application/json
 
-###
 
-### 7. Obtener presupuestos activos
-GET http://localhost:8000/presupuesto/activos
-Content-Type: application/json
 
-###
-
-### 8. Eliminar presupuesto
-DELETE http://localhost:8000/presupuesto/1
-Content-Type: application/json
 
 ### 4. Obtener reporte semanal (sin parámetros)
 GET http://localhost:8000/transacciones/reporte-semanal
