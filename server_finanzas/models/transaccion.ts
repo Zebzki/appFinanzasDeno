@@ -9,6 +9,19 @@ interface transaccionData {
     idCategoria: number;
     idCuenta: number;
 }
+
+interface reporteSemanalData {
+    idUsuario: number;
+    usuario: string;
+    año: number;
+    semana: number;
+    inicio_semana: string;
+    fin_semana: string;
+    total_ingresos: number;
+    total_gastos: number;
+    balance: number;
+    estado_financiero: string;
+}
 export class Transaccion {
     public _objTransaccion: transaccionData | null;
     public _idTransaccion: number | null;
@@ -98,5 +111,16 @@ export class Transaccion {
                 return { success: false, mensaje: `Error al ingresar la transacción. ${error}` };
             }
         }
+    }
+public async obtenerReporteSemanal(
+        fechaInicio: string | null = null,
+        fechaFin: string | null = null,
+        incluirDetalle: number = 0
+    ): Promise<reporteSemanalData[]> {
+        const { rows: reporte } = await conexion.execute(
+            "CALL sp_reporte_semanal(?, ?, ?, ?)",
+            [this._idTransaccion, fechaInicio, fechaFin, incluirDetalle]
+        );
+        return reporte as reporteSemanalData[];
     }
 }
