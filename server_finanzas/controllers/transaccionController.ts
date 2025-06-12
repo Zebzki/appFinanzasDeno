@@ -54,3 +54,22 @@ export const ingresarTransaccionGasto = async (ctx: any) => {
         response.body = { success: false, mensaje: `error interno del servidor. ${error}` };
     }
 }
+export const getReporteSemanal = async (ctx: any) => {
+    const { response, state, request } = ctx;
+    try {
+        const id = state.user.sub;
+        const url = new URL(request.url);
+        const fechaInicio = url.searchParams.get('fechaInicio');
+        const fechaFin = url.searchParams.get('fechaFin');
+        const incluirDetalle = url.searchParams.get('incluirDetalle') === '1' ? 1 : 0;
+
+        const objTransaccion = new Transaccion(null, id);
+        const reporte = await objTransaccion.obtenerReporteSemanal(fechaInicio, fechaFin, incluirDetalle);
+        
+        response.status = 200;
+        response.body = { success: true, data: reporte };
+    } catch (error) {
+        response.status = 500;
+        response.body = { success: false, mensaje: `error interno del servidor. ${error}` };
+    }
+}

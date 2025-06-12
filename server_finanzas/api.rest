@@ -87,71 +87,79 @@ Content-Type: application/json
 ###
 
 
-### CUENTAS - CRUD COMPLETO
+### CUENTAS - CRUD COMPLETO CON SOPORTE PARA USUARIOS
 
-
-### 1. Listar todas las cuentas
+### 1. Listar todas las cuentas (todas las cuentas de todos los usuarios)
 GET http://localhost:8000/cuenta
 Content-Type: application/json
 
 ###
 
-### 2. Obtener una cuenta por ID
+### 2. Listar cuentas de un usuario específico
+GET http://localhost:8000/usuario/1/cuenta
+Content-Type: application/json
+
+###
+
+### 3. Obtener una cuenta por ID
 GET http://localhost:8000/cuenta/2
 Content-Type: application/json
 
 ###
 
-### 3. Crear cuenta bancaria
+### 4. Crear cuenta bancaria para el usuario 1
 POST http://localhost:8000/cuenta
 Content-Type: application/json
 
 {
-  "nombreCuenta": "Banco Nacional",
+  "nombreCuenta": "Banco Nacional - Usuario 1",
   "idTipoCuenta": 2,
-  "saldo": 15000.50
+  "saldo": 15000.50,
+  "idUsuario": 1
 }
 
 ###
 
-### 4. Crear cuenta de efectivo
+### 5. Crear cuenta de efectivo para el usuario 2
 POST http://localhost:8000/cuenta
 Content-Type: application/json
 
 {
-  "nombreCuenta": "Efectivo",
+  "nombreCuenta": "Efectivo Personal",
   "idTipoCuenta": 5,
-  "saldo": 500.00
-
+  "saldo": 500.00,
+  "idUsuario": 2
 }
 
 ###
 
-### 5. Crear tarjeta de crédito
+### 6. Crear tarjeta de crédito para el usuario 3
 POST http://localhost:8000/cuenta
 Content-Type: application/json
 
 {
-  "nombreCuenta": "Visa Gold",
+  "nombreCuenta": "Visa Gold Premium",
   "idTipoCuenta": 3,
-  "saldo": 2500.00
+  "saldo": 2500.00,
+  "idUsuario": 3
 }
 
 ###
 
-### 6. Actualizar una cuenta existente
+### 7. Actualizar una cuenta existente (incluyendo cambio de usuario si es necesario)
 PUT http://localhost:8000/cuenta/2
 Content-Type: application/json
 
 {
-  "nombreCuenta": "Banco Nacional - Cuenta Corriente",
+  "nombreCuenta": "Banco Nacional - Cuenta Corriente Actualizada",
   "idTipoCuenta": 2,
-  "saldo": 18000.75
+  "saldo": 18000.75,
+  "idUsuario": 1
 }
 
 ###
 
-### 7. Actualizar solo el saldo
+### 8. Actualizar solo el saldo de una cuenta
 PUT http://localhost:8000/cuenta/4/saldo
 Content-Type: application/json
 
@@ -161,20 +169,84 @@ Content-Type: application/json
 
 ###
 
-### 8. Obtener cuentas con información de uso
+### 9. Obtener todas las cuentas con información de uso
 GET http://localhost:8000/cuenta/con-uso
 Content-Type: application/json
 
 ###
 
-### 9. Obtener resumen de cuentas por tipo
+### 10. Obtener cuentas con información de uso para un usuario específico
+GET http://localhost:8000/usuario/1/cuenta/con-uso
+Content-Type: application/json
+
+###
+
+### 11. Obtener resumen general de cuentas por tipo
 GET http://localhost:8000/cuenta/resumen
 Content-Type: application/json
 
 ###
 
-### 10. Eliminar una cuenta
+### 12. Obtener resumen de cuentas por tipo para un usuario específico
+GET http://localhost:8000/usuario/2/cuenta/resumen
+Content-Type: application/json
+
+###
+
+### 13. Obtener estadísticas generales de todas las cuentas
+GET http://localhost:8000/cuentas/estadisticas
+Content-Type: application/json
+
+###
+
+### 14. Obtener estadísticas de cuentas para un usuario específico
+GET http://localhost:8000/usuario/1/cuenta/estadisticas
+Content-Type: application/json
+
+###
+
+### 15. Verificar uso de una cuenta específica
+GET http://localhost:8000/cuenta/2/uso
+Content-Type: application/json
+
+###
+
+### 16. Eliminar una cuenta (solo si no tiene transacciones)
 DELETE http://localhost:8000/cuenta/8
+Content-Type: application/json
+
+###
+
+### EJEMPLOS DE CASOS DE USO ESPECÍFICOS
+
+### 17. Crear cuenta de ahorros para usuario específico
+POST http://localhost:8000/cuenta
+Content-Type: application/json
+
+{
+  "nombreCuenta": "Cuenta Ahorros Programado",
+  "idTipoCuenta": 1,
+  "saldo": 0.00,
+  "idUsuario": 4
+}
+
+###
+
+### 18. Crear cuenta de inversión para usuario específico
+POST http://localhost:8000/cuenta
+Content-Type: application/json
+
+{
+  "nombreCuenta": "Portafolio de Inversiones",
+  "idTipoCuenta": 6,
+  "saldo": 50000.00,
+  "idUsuario": 5
+}
+
+###
+
+### 19. Verificar todas las cuentas de un usuario con sus estadísticas completas
+GET http://localhost:8000/usuario/1/cuenta/estadisticas
 Content-Type: application/json
 
 ###
@@ -194,7 +266,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vO
 # TRANSACCIONES
 GET http://localhost:8000/transacciones
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6IjkxMGY5MTFlLTY2NTctNDBmOC04ZmE0LTIzNDg4ZTMzODI2ZiIsImV4cCI6MTc0OTY3OTAxMn0.tkcitHEHODyf5JInxdOey0nfEeS6tYUvK0F_f7lrY6g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6ImJmMDQ1ZmIzLWM1ODgtNDg2Yy04ZTFjLTM4M2I3YTIyYjU2NyIsImV4cCI6MTc0OTczNDcwMn0.3Gv7qI4ia_8J4Rwuk5TKf0QtCFOvWA-eF96xmnjlb3A
 ###
 POST http://localhost:8000/transacciones/ingreso
 Content-Type: application/json
@@ -202,8 +274,8 @@ Content-Type: application/json
 {
    "monto": 600000,
    "descripcion": "pago de freelance",
-   "idCategoria": 1,
-   "idCuenta": 10
+   "idCategoria": 2,
+   "idCuenta": 3
 }
 ###
 POST http://localhost:8000/transacciones/gasto
@@ -377,4 +449,30 @@ Content-Type: application/json
 DELETE http://localhost:8000/presupuesto/1
 Content-Type: application/json
 
+### 4. Obtener reporte semanal (sin parámetros)
+GET http://localhost:8000/transacciones/reporte-semanal
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6ImJmMDQ1ZmIzLWM1ODgtNDg2Yy04ZTFjLTM4M2I3YTIyYjU2NyIsImV4cCI6MTc0OTczNDcwMn0.3Gv7qI4ia_8J4Rwuk5TKf0QtCFOvWA-eF96xmnjlb3A
 
+###
+
+### 5. Obtener reporte semanal con rango de fechas
+GET http://localhost:8000/transacciones/reporte-semanal?fechaInicio=2025-01-01&fechaFin=2025-06-30
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6ImJmMDQ1ZmIzLWM1ODgtNDg2Yy04ZTFjLTM4M2I3YTIyYjU2NyIsImV4cCI6MTc0OTczNDcwMn0.3Gv7qI4ia_8J4Rwuk5TKf0QtCFOvWA-eF96xmnjlb3A
+
+###
+
+### 6. Obtener reporte semanal con detalle
+GET http://localhost:8000/transacciones/reporte-semanal?incluirDetalle=1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6ImJmMDQ1ZmIzLWM1ODgtNDg2Yy04ZTFjLTM4M2I3YTIyYjU2NyIsImV4cCI6MTc0OTczNDcwMn0.3Gv7qI4ia_8J4Rwuk5TKf0QtCFOvWA-eF96xmnjlb3A
+
+###
+
+### 7. Obtener reporte semanal completo
+GET http://localhost:8000/transacciones/reporte-semanal?fechaInicio=2025-05-01&fechaFin=2025-06-30&incluirDetalle=1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vODAwMC9zZXJ2ZXJfZmluYW56YXMiLCJzdWIiOjIsImVtYSI6ImFuYS5sb3BlekBtYWlsLmNvbSIsImp0aSI6ImJmMDQ1ZmIzLWM1ODgtNDg2Yy04ZTFjLTM4M2I3YTIyYjU2NyIsImV4cCI6MTc0OTczNDcwMn0.3Gv7qI4ia_8J4Rwuk5TKf0QtCFOvWA-eF96xmnjlb3A
+
+###
